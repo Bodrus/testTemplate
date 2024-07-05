@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {View, Text, Switch, StyleSheet} from 'react-native';
-import {ThemeContext} from '../context/ThemeContext.tsx';
+
+import {ThemeContext} from '../../context/ThemeContext';
 
 const ThemeSwitcher = () => {
   const themeContext = useContext(ThemeContext);

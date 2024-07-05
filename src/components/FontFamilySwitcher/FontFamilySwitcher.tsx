@@ -1,8 +1,8 @@
-// FontFamilySwitcher.tsx
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import {ThemeContext} from '../context/ThemeContext.tsx';
+
+import {ThemeContext} from '../../context/ThemeContext';
 
 const FontFamilySwitcher = () => {
   const themeContext = useContext(ThemeContext);
@@ -12,7 +12,7 @@ const FontFamilySwitcher = () => {
   }
 
   const {theme, setFontFamily, isDarkTheme} = themeContext;
-  const fontFamilies = [
+  const fontFamilies: string[] = [
     'System',
     'Arial',
     'Courier New',

@@ -1,24 +1,16 @@
 import React, {createContext, useState, useEffect, ReactNode} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useColorScheme} from 'react-native';
-import {darkTheme, lightTheme, Theme} from '../theme/theme.ts';
 
-interface ThemeContextProps {
-  theme: Theme;
-  setThemeByName: (name: string) => void;
-  setFontSize: (size: number) => void;
-  setFontFamily: (family: string) => void;
-  isDarkTheme: boolean;
-  setBackgroundImage: (imageUri: string | null) => void;
-  setIconSize: (size: 'small' | 'medium' | 'large') => void;
-  setIconColor: (color: string | null) => void;
-}
+import {darkTheme, lightTheme} from '../theme/theme';
+import {Theme, ThemeContextProps} from '../types/theme';
 
 export const ThemeContext = createContext<ThemeContextProps | undefined>(
   undefined,
 );
 
-const themes = {light: lightTheme, dark: darkTheme};
+type ThemeName = 'light' | 'dark';
+const themes: Record<ThemeName, Theme> = {light: lightTheme, dark: darkTheme};
 
 export const ThemeProvider = ({children}: {children: ReactNode}) => {
   const systemColorScheme = useColorScheme();
@@ -33,16 +25,16 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
         const savedFontSize = await AsyncStorage.getItem('fontSize');
         const savedFontFamily = await AsyncStorage.getItem('fontFamily');
 
-        if (savedThemeName !== null && themes[savedThemeName]) {
-          setTheme(themes[savedThemeName]);
+        if (savedThemeName && themes[savedThemeName as ThemeName]) {
+          setTheme(themes[savedThemeName as ThemeName]);
         }
-        if (savedFontSize !== null) {
+        if (savedFontSize) {
           setTheme(prevTheme => ({
             ...prevTheme,
             fontSize: parseInt(savedFontSize, 10),
           }));
         }
-        if (savedFontFamily !== null) {
+        if (savedFontFamily) {
           setTheme(prevTheme => ({...prevTheme, fontFamily: savedFontFamily}));
         }
       } catch (error) {
@@ -54,8 +46,8 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
   }, []);
 
   const setThemeByName = (name: string) => {
-    if (themes[name]) {
-      setTheme(themes[name]);
+    if (themes[name as ThemeName]) {
+      setTheme(themes[name as ThemeName]);
       AsyncStorage.setItem('themeName', name).catch(error =>
         console.log('Failed to save theme:', error),
       );

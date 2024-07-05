@@ -1,11 +1,12 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet, ImageBackground} from 'react-native';
-import FontSizeSwitcher from '../../components/FontSizeSwitcher.tsx';
-import {ThemeContext} from '../../context/ThemeContext.tsx';
-import FontFamilySwitcher from '../../components/FontFamilySwitcher.tsx';
-import BackgroundPicker from '../../components/BackgroundPicker.tsx';
-import IconsTemplate from "../../components/IconsTemplate.tsx";
-import ThemeSwitcher from "../../components/ThemeSwitcher.tsx";
+
+import {ThemeContext} from '../../context/ThemeContext';
+import FontFamilySwitcher from '../../components/FontFamilySwitcher';
+import BackgroundPicker from '../../components/BackgroundPicker';
+import IconsTemplate from '../../components/IconsTemplate';
+import ThemeSwitcher from '../../components/ThemeSwitcher';
+import FontSizeSwitcher from '../../components/FontSizeSwitcher';
 
 const SettingsScreen = () => {
   const themeContext = useContext(ThemeContext);
@@ -28,7 +29,7 @@ const SettingsScreen = () => {
           style={styles.backgroundImage}>
           <ThemeSwitcher />
           <BackgroundPicker />
-          <IconsTemplate />
+          <IconsTemplate themeContext={themeContext} />
           <FontSizeSwitcher />
           <FontFamilySwitcher />
         </ImageBackground>
@@ -36,7 +37,7 @@ const SettingsScreen = () => {
         <>
           <ThemeSwitcher />
           <BackgroundPicker />
-          <IconsTemplate />
+          <IconsTemplate themeContext={themeContext} />
           <FontSizeSwitcher />
           <FontFamilySwitcher />
         </>

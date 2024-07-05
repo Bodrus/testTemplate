@@ -1,18 +1,4 @@
-interface ThemeColors {
-  primary: string;
-  background: string;
-  text: string;
-  icon: string;
-}
-
-export interface Theme {
-  name: string;
-  colors: ThemeColors;
-  fontSize: number;
-  fontFamily: string;
-  backgroundImage: string | null;
-  iconSize: 'small' | 'medium' | 'large';
-}
+import {Theme} from '../types/theme';
 
 const lightTheme: Theme = {
   name: 'light',

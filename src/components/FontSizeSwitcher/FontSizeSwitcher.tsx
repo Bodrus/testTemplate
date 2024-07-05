@@ -1,8 +1,8 @@
-// FontSizeSwitcher.tsx
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Slider from '@react-native-community/slider';
-import {ThemeContext} from '../context/ThemeContext';
+
+import {ThemeContext} from '../../context/ThemeContext';
 
 const FontSizeSwitcher = () => {
   const themeContext = useContext(ThemeContext);

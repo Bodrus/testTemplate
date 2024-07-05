@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeStackNavigatorParamList} from '../types/navigation.ts';
+import {HomeStackNavigatorParamList} from '../types/navigation';
 
 const Stack = createNativeStackNavigator<HomeStackNavigatorParamList>();
 

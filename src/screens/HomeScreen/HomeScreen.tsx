@@ -1,11 +1,12 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, Pressable, Text} from 'react-native';
-import {ThemeContext} from '../../context/ThemeContext.tsx';
+import {View, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {HomeNavigationProp} from '../../types/navigation.ts';
-import ThemeSwitcher from '../../components/ThemeSwitcher.tsx';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {getIconSize} from '../../utils.ts';
+
+import {ThemeContext} from '../../context/ThemeContext';
+import {HomeNavigationProp} from '../../types/navigation';
+import ThemeSwitcher from '../../components/ThemeSwitcher';
+import SettingBtn from '../../components/SettingBtn';
+import {HomeContent} from './HomeContent';
 
 const HomeScreen = () => {
   const themeContext = useContext(ThemeContext);
@@ -24,47 +25,13 @@ const HomeScreen = () => {
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <View style={styles.headerContainer}>
         <ThemeSwitcher />
-        <Pressable
-          onPress={goToSettings}
-          hitSlop={5}
-          style={styles.iconContainer}>
-          <AntDesign
-            name="setting"
-            color={isDarkTheme ? 'white' : 'black'}
-            size={34}
-          />
-          <Text style={{color: theme.colors.text}}>Settings</Text>
-        </Pressable>
-      </View>
-      <View style={styles.contentContainer}>
-        <Text
-          style={{
-            color: theme.colors.text,
-            fontSize: theme.fontSize,
-            fontFamily: theme.fontFamily,
-          }}>
-          Some text for example usage change font family
-        </Text>
-
-        <AntDesign
-          name="windows"
-          color={theme.colors.icon}
-          size={getIconSize(theme.iconSize)}
-          style={styles.icon}
-        />
-        <AntDesign
-          name="rest"
-          color={theme.colors.icon}
-          size={getIconSize(theme.iconSize)}
-          style={styles.icon}
-        />
-        <AntDesign
-          name="linkedin-square"
-          color={theme.colors.icon}
-          size={getIconSize(theme.iconSize)}
-          style={styles.icon}
+        <SettingBtn
+          goToSettings={goToSettings}
+          color={isDarkTheme ? 'white' : 'black'}
+          textColor={theme.colors.text}
         />
       </View>
+      <HomeContent theme={theme} />
     </View>
   );
 };
@@ -80,14 +47,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 15,
   },
-  iconContainer: {
-    alignItems: 'center',
-  },
-  icon: {
-    marginVertical: 5,
-  },
-  text: {},
-  contentContainer: {},
 });
 
 export default HomeScreen;
