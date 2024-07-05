@@ -23,19 +23,19 @@ export const HomeContent = ({theme}: HomeContentProps) => {
 
       <AntDesign
         name="windows"
-        color={theme.colors.icon}
+        color={theme.iconColor}
         size={getIconSize(theme.iconSize)}
         style={styles.icon}
       />
       <AntDesign
         name="rest"
-        color={theme.colors.icon}
+        color={theme.iconColor}
         size={getIconSize(theme.iconSize)}
         style={styles.icon}
       />
       <AntDesign
         name="linkedin-square"
-        color={theme.colors.icon}
+        color={theme.iconColor}
         size={getIconSize(theme.iconSize)}
         style={styles.icon}
       />
@@ -44,7 +44,9 @@ export const HomeContent = ({theme}: HomeContentProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    margin: 15,
+  },
   icon: {
     marginVertical: 5,
   },

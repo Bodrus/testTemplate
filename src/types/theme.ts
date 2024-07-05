@@ -2,8 +2,9 @@ interface ThemeColors {
   primary: string;
   background: string;
   text: string;
-  icon: string;
 }
+
+export type iconSize = 'small' | 'medium' | 'large';
 
 export interface Theme {
   name: string;
@@ -11,7 +12,8 @@ export interface Theme {
   fontSize: number;
   fontFamily: string;
   backgroundImage: string | null;
-  iconSize: 'small' | 'medium' | 'large';
+  iconSize: iconSize;
+  iconColor: string;
 }
 
 export interface ThemeContextProps {

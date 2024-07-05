@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useColorScheme} from 'react-native';
 
 import {darkTheme, lightTheme} from '../theme/theme';
-import {Theme, ThemeContextProps} from '../types/theme';
+import {iconSize, Theme, ThemeContextProps} from '../types/theme';
 
 export const ThemeContext = createContext<ThemeContextProps | undefined>(
   undefined,
@@ -21,21 +21,34 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        const savedThemeName = await AsyncStorage.getItem('themeName');
-        const savedFontSize = await AsyncStorage.getItem('fontSize');
-        const savedFontFamily = await AsyncStorage.getItem('fontFamily');
+        const [
+          savedThemeName,
+          savedFontSize,
+          savedFontFamily,
+          savedIconSize,
+          savedIconColor,
+        ] = await Promise.all([
+          AsyncStorage.getItem('themeName'),
+          AsyncStorage.getItem('fontSize'),
+          AsyncStorage.getItem('fontFamily'),
+          AsyncStorage.getItem('iconSize'),
+          AsyncStorage.getItem('iconColor'),
+        ]);
 
         if (savedThemeName && themes[savedThemeName as ThemeName]) {
           setTheme(themes[savedThemeName as ThemeName]);
         }
         if (savedFontSize) {
-          setTheme(prevTheme => ({
-            ...prevTheme,
-            fontSize: parseInt(savedFontSize, 10),
-          }));
+          setFontSize(parseInt(savedFontSize, 10));
         }
         if (savedFontFamily) {
-          setTheme(prevTheme => ({...prevTheme, fontFamily: savedFontFamily}));
+          setFontFamily(savedFontFamily);
+        }
+        if (savedIconColor) {
+          setIconColor(savedIconColor);
+        }
+        if (savedIconSize) {
+          setIconSize(savedIconSize as iconSize);
         }
       } catch (error) {
         console.log('Failed to load theme:', error);
@@ -45,12 +58,35 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
     loadTheme();
   }, []);
 
-  const setThemeByName = (name: string) => {
-    if (themes[name as ThemeName]) {
-      setTheme(themes[name as ThemeName]);
-      AsyncStorage.setItem('themeName', name).catch(error =>
-        console.log('Failed to save theme:', error),
-      );
+  const setThemeByName = async (name: string) => {
+    try {
+      const savedFontSize = await AsyncStorage.getItem('fontSize');
+      const savedFontFamily = await AsyncStorage.getItem('fontFamily');
+      const savedIconSize = (await AsyncStorage.getItem(
+        'iconSize',
+      )) as iconSize;
+      const savedIconColor = await AsyncStorage.getItem('iconColor');
+
+      if (themes[name as ThemeName]) {
+        const newTheme = themes[name as ThemeName];
+
+        const updatedTheme = {
+          ...newTheme,
+          fontSize: savedFontSize
+            ? parseInt(savedFontSize, 10)
+            : newTheme.fontSize,
+          fontFamily: savedFontFamily || newTheme.fontFamily,
+          iconSize: savedIconSize || newTheme.iconSize,
+          iconColor: savedIconColor || newTheme.iconColor,
+        };
+
+        setTheme(updatedTheme);
+        AsyncStorage.setItem('themeName', name).catch(error =>
+          console.log('Failed to save theme:', error),
+        );
+      }
+    } catch (error) {
+      console.log('Failed to load theme:', error);
     }
   };
 
@@ -78,11 +114,11 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
   const setIconColor = (color: string) => {
     setTheme(prevTheme => ({
       ...prevTheme,
-      colors: {
-        ...prevTheme.colors,
-        icon: color,
-      },
+      iconColor: color,
     }));
+    AsyncStorage.setItem('iconColor', color).catch(error =>
+      console.log('Failed to save font family:', error),
+    );
   };
 
   const setIconSize = (size: 'small' | 'medium' | 'large') => {
@@ -90,6 +126,9 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
       ...prevTheme,
       iconSize: size,
     }));
+    AsyncStorage.setItem('iconSize', size).catch(error =>
+      console.log('Failed to save font family:', error),
+    );
   };
 
   const isDarkTheme = theme.name === 'dark';

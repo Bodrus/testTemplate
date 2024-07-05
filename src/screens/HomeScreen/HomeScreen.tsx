@@ -1,12 +1,11 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, ImageBackground} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {ThemeContext} from '../../context/ThemeContext';
 import {HomeNavigationProp} from '../../types/navigation';
-import ThemeSwitcher from '../../components/ThemeSwitcher';
-import SettingBtn from '../../components/SettingBtn';
 import {HomeContent} from './HomeContent';
+import {HomeHeader} from './HomeHeader';
 
 const HomeScreen = () => {
   const themeContext = useContext(ThemeContext);
@@ -23,15 +22,27 @@ const HomeScreen = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
-      <View style={styles.headerContainer}>
-        <ThemeSwitcher />
-        <SettingBtn
-          goToSettings={goToSettings}
-          color={isDarkTheme ? 'white' : 'black'}
-          textColor={theme.colors.text}
-        />
-      </View>
-      <HomeContent theme={theme} />
+      {theme.backgroundImage ? (
+        <ImageBackground
+          source={{uri: theme.backgroundImage}}
+          style={styles.backgroundImage}>
+          <HomeHeader
+            theme={theme}
+            goToSettings={goToSettings}
+            isDarkTheme={isDarkTheme}
+          />
+          <HomeContent theme={theme} />
+        </ImageBackground>
+      ) : (
+        <>
+          <HomeHeader
+            theme={theme}
+            goToSettings={goToSettings}
+            isDarkTheme={isDarkTheme}
+          />
+          <HomeContent theme={theme} />
+        </>
+      )}
     </View>
   );
 };
@@ -39,13 +50,16 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 15,
+    margin: 15,
+  },
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
   },
 });
 

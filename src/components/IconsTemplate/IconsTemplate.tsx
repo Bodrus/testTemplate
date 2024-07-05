@@ -15,11 +15,9 @@ interface Props {
 
 const IconsTemplate = ({themeContext}: Props) => {
   const {theme, setIconColor, setIconSize} = themeContext;
-  const [selectedColor, setSelectedColor] = useState<string>(theme.colors.icon);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleColorChange = (color: string) => {
-    setSelectedColor(color);
     setIconColor(color);
     setModalVisible(false);
   };
@@ -36,8 +34,8 @@ const IconsTemplate = ({themeContext}: Props) => {
               style={[
                 styles.colorSample,
                 {
-                  backgroundColor: selectedColor || theme.colors.text,
-                  borderColor: selectedColor || theme.colors.text,
+                  backgroundColor: theme.iconColor,
+                  borderColor: theme.iconColor,
                 },
               ]}
               onPress={() => setModalVisible(true)}
@@ -46,7 +44,7 @@ const IconsTemplate = ({themeContext}: Props) => {
         </View>
         <AntDesign
           name="rest"
-          color={theme.colors.icon}
+          color={theme.iconColor}
           size={getIconSize(theme.iconSize)}
         />
         <Modal
@@ -59,7 +57,7 @@ const IconsTemplate = ({themeContext}: Props) => {
               <Text style={styles.modalTitle}>Choose a color</Text>
               <ColorPicker
                 onColorSelected={handleColorChange}
-                defaultColor={selectedColor}
+                defaultColor={theme.iconColor}
                 style={styles.colorPicker}
                 sliderComponent={Slider}
               />
