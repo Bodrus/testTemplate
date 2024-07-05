@@ -23,6 +23,7 @@ export interface ThemeContextProps {
   setFontFamily: (family: string) => void;
   isDarkTheme: boolean;
   setBackgroundImage: (imageUri: string | null) => void;
+  deleteBackgroundImage: () => void;
   setIconSize: (size: 'small' | 'medium' | 'large') => void;
   setIconColor: (color: string) => void;
 }

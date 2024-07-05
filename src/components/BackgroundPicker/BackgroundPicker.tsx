@@ -12,7 +12,7 @@ const BackgroundPicker = () => {
     return null;
   }
 
-  const {theme, setBackgroundImage} = themeContext;
+  const {theme, setBackgroundImage, deleteBackgroundImage} = themeContext;
 
   const onChangePhoto = () => {
     launchImageLibrary(
@@ -26,7 +26,7 @@ const BackgroundPicker = () => {
   };
 
   const resetPhoto = () => {
-    setBackgroundImage(null);
+    deleteBackgroundImage();
   };
 
   return (

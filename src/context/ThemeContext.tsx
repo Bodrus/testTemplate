@@ -27,12 +27,14 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
           savedFontFamily,
           savedIconSize,
           savedIconColor,
+          savedBackgroundImage,
         ] = await Promise.all([
           AsyncStorage.getItem('themeName'),
           AsyncStorage.getItem('fontSize'),
           AsyncStorage.getItem('fontFamily'),
           AsyncStorage.getItem('iconSize'),
           AsyncStorage.getItem('iconColor'),
+          AsyncStorage.getItem('backgroundImage'),
         ]);
 
         if (savedThemeName && themes[savedThemeName as ThemeName]) {
@@ -50,6 +52,12 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
         if (savedIconSize) {
           setIconSize(savedIconSize as iconSize);
         }
+        if (savedIconSize) {
+          setIconSize(savedIconSize as iconSize);
+        }
+        if (savedBackgroundImage) {
+          setBackgroundImage(savedBackgroundImage);
+        }
       } catch (error) {
         console.log('Failed to load theme:', error);
       }
@@ -66,6 +74,7 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
         'iconSize',
       )) as iconSize;
       const savedIconColor = await AsyncStorage.getItem('iconColor');
+      const backgroundImage = await AsyncStorage.getItem('backgroundImage');
 
       if (themes[name as ThemeName]) {
         const newTheme = themes[name as ThemeName];
@@ -78,6 +87,7 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
           fontFamily: savedFontFamily || newTheme.fontFamily,
           iconSize: savedIconSize || newTheme.iconSize,
           iconColor: savedIconColor || newTheme.iconColor,
+          backgroundImage: backgroundImage || null,
         };
 
         setTheme(updatedTheme);
@@ -104,11 +114,24 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
     );
   };
 
-  const setBackgroundImage = (imageUri: string | null) => {
+  const setBackgroundImage = (imageUri: string) => {
     setTheme(prevTheme => ({
       ...prevTheme,
       backgroundImage: imageUri,
     }));
+    AsyncStorage.setItem('backgroundImage', imageUri).catch(error =>
+      console.log('Failed to save font family:', error),
+    );
+  };
+
+  const deleteBackgroundImage = () => {
+    setTheme(prevTheme => ({
+      ...prevTheme,
+      backgroundImage: null,
+    }));
+    AsyncStorage.removeItem('backgroundImage').catch(error =>
+      console.log('Failed to remove:', error),
+    );
   };
 
   const setIconColor = (color: string) => {
@@ -142,6 +165,7 @@ export const ThemeProvider = ({children}: {children: ReactNode}) => {
         setFontFamily,
         isDarkTheme,
         setBackgroundImage,
+        deleteBackgroundImage,
         setIconColor,
         setIconSize,
       }}>
